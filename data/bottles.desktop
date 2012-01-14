@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Bottles
+GenericName=Bottles
+Comment=Bottles
+Exec=bottles
+StartupNotify=true
+Terminal=false
+Type=Application
+Icon=bottles
+Categories=Web;Internet;GNOME;
+

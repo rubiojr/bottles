@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require 'Qt4'
+require 'qtwebkit'
+require 'yaml'
+$: << File.dirname(__FILE__) + "/../lib/"
+require 'bottles'
+
+if ARGV.include? '-h' or ARGV.include? '--help'
+  puts "Bottles version #{Bottles::VERSION}"
+  $stdout.puts "\nUsage: bottle --run ~/.bottles/mybottle"
+  exit 0
+end
+
+if ARGV.include? '--run'
+  bottle_path = ARGV[1] || ""
+  if ARGV[1].nil?
+    $stderr.puts "Usage: bottle --run ~/.bottles/mybottle"
+    exit 1
+  end
+  begin
+    Bottles::App.load_bottle ARGV[1]
+  rescue ArgumentError => e
+    puts "ERROR: " + e.message
+  end
+else
+  Bottles::App.run
+end
