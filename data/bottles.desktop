@@ -7,5 +7,5 @@ StartupNotify=true
 Terminal=false
 Type=Application
 Icon=bottles
-Categories=Web;Internet;GNOME;
+Categories=Network;WebBrowser;
 

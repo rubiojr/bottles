@@ -29,11 +29,28 @@ module Bottles
       BottleListDispatcher.instance.add_observer self 
       @ui = Ui::BottleSelectorDialog.new
       @ui.setup_ui(self)
+      currentRow = 0 
       @ui.newBottleButton.connect(SIGNAL :clicked) { showCreateBottleDialog }
+      @ui.listWidget.connect SIGNAL('itemActivated(QListWidgetItem*)') do |item|
+        item_activated item
+      end
+      connect SIGNAL('accepted()') do 
+        ok_pressed
+      end
       BottleManager.instance.all.each do |bc|
         icon = bc.icon || (Bottles::UI.bundled_icons_path + "/bottles.svg")
         BottleListDispatcher.instance.add_bottle(bc.name, icon)
       end
+    end
+    
+    def ok_pressed
+      Bottles::App.run_bottle @ui.listWidget.currentItem.text
+      exit
+    end
+    
+    def item_activated(item)
+      Bottles::App.run_bottle item.text
+      exit
     end
 
     def update(spec)
@@ -75,6 +92,7 @@ module Bottles
       else
         BottleListDispatcher.instance.add_bottle @ui.nameEntry.text, @icon_path
         Bottles::App.createBottle @ui.nameEntry.text, @ui.urlEntry.text, @icon_path
+        Bottles::App.run_bottle @ui.nameEntry.text
       end
     end
 

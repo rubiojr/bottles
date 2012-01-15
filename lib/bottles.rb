@@ -20,21 +20,21 @@ module Bottles
       end
     end
 
-    def self.load_bottle(path)
-      Qt::Application.new(ARGV) do |app|
-        config = BottleManager.instance.find_bottle(path.split("/").last)
-        raise ArgumentError.new("Could not find bottle for path #{path}") if config.nil?
-        wb = Bottles::BottleView.new(config)
-        wb.show
-        app.applicationName = "Bottles"
-        app.exec
+    def self.run_bottle(path)
+      if not bottle_running?(path)
+        fork do
+          exec "#{File.dirname(__FILE__)}/../bin/bottle-runner", path
+        end
       end
+    end
+
+    def self.bottle_running?(name)
+      proc_name = name.strip.chomp.split('/').last + "-bottle"
+      !`pgrep -f ^#{proc_name}`.strip.chomp.empty?
     end
 
     def self.createBottle(name, url, icon = nil)
       config = BottleManager.instance.load_or_create_bottle(name, url, icon)
-      wb = Bottles::BottleView.new(config)
-      wb.show
     end
   end
 
@@ -45,9 +45,14 @@ module Bottles
       @bottle_manager = BottleManager.instance
       @bottle_config = bottle_config
       connect(SIGNAL('loadProgress(int)')) { |p| load_progress(p) }
+      connect(SIGNAL('urlChanged(QUrl)')) { |o| url_changed(o) }
       setGeometry 0,0,900,600
       load_cookies
       load_content
+    end
+
+    def url_changed(url)
+      save_cookies
     end
 
     def load_progress(p)
@@ -55,10 +60,10 @@ module Bottles
 
     def load_content
       self.load Qt::Url.new(@bottle_config.url)
-      save_cookies
     end
 
     def save_cookies
+      puts "saving cookies to #{@bottle_config.cookies_file}"
       access_manager = self.page.networkAccessManager
       cookie_jar = access_manager.cookieJar
       config = {}
@@ -191,7 +196,7 @@ module Bottles
       desktop_spec = "[Desktop Entry]\n"
       desktop_spec += "Name=#{name}\n"
       desktop_spec += "GenericName=#{name}\n"
-      desktop_spec += "Exec=bottles --run #{target_dir}\n"
+      desktop_spec += "Exec=bottle-runner #{target_dir}\n"
       desktop_spec += "StartupNotify=true\n"
       desktop_spec += "Terminal=false\n"
       desktop_spec += "Type=Application\n"
