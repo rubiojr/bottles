@@ -2,6 +2,15 @@
 
 Create self-contained web apps for linux. It's the Fluid.app (Mac OSX) equivalent for linux.
 
+*Website*
+
+[http://bottles.frameos.org](http://bottles.frameos.org)
+
+*Demo*
+
+[YouTube](http://www.youtube.com/watch?v=og8ZAcOKig0)
+
+
 # Instalation
 
 ## Ubuntu
