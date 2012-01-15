@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'bottle_selector.ui'
 **
-** Created: Sat Jan 14 22:50:16 2012
+** Created: Sun Jan 15 17:59:43 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -13,7 +13,6 @@ class Ui_BottleSelectorDialog
     attr_reader :listWidget
     attr_reader :horizontalLayout_2
     attr_reader :newBottleButton
-    attr_reader :templatesButton
     attr_reader :horizontalSpacer
     attr_reader :buttonBox
 
@@ -51,11 +50,6 @@ class Ui_BottleSelectorDialog
 
     @horizontalLayout_2.addWidget(@newBottleButton)
 
-    @templatesButton = Qt::PushButton.new(bottleSelectorDialog)
-    @templatesButton.objectName = "templatesButton"
-
-    @horizontalLayout_2.addWidget(@templatesButton)
-
     @horizontalSpacer = Qt::SpacerItem.new(40, 20, Qt::SizePolicy::Expanding, Qt::SizePolicy::Minimum)
 
     @horizontalLayout_2.addItem(@horizontalSpacer)
@@ -63,7 +57,7 @@ class Ui_BottleSelectorDialog
     @buttonBox = Qt::DialogButtonBox.new(bottleSelectorDialog)
     @buttonBox.objectName = "buttonBox"
     @buttonBox.orientation = Qt::Horizontal
-    @buttonBox.standardButtons = Qt::DialogButtonBox::Close|Qt::DialogButtonBox::Ok
+    @buttonBox.standardButtons = Qt::DialogButtonBox::Open
     @buttonBox.centerButtons = false
 
     @horizontalLayout_2.addWidget(@buttonBox)
@@ -89,7 +83,6 @@ class Ui_BottleSelectorDialog
     def retranslateUi(bottleSelectorDialog)
     bottleSelectorDialog.windowTitle = Qt::Application.translate("BottleSelectorDialog", "Bottle Selector", nil, Qt::Application::UnicodeUTF8)
     @newBottleButton.text = Qt::Application.translate("BottleSelectorDialog", "New Bottle", nil, Qt::Application::UnicodeUTF8)
-    @templatesButton.text = Qt::Application.translate("BottleSelectorDialog", "Templates", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi
 
     def retranslate_ui(bottleSelectorDialog)

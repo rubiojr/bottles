@@ -1,4 +1,5 @@
 require 'observer'
+require 'yaml'
 
 module Bottles
   Dir[File.dirname(__FILE__) + "/../../ui/*_ui.rb"].each do |ui|
@@ -8,6 +9,10 @@ module Bottles
   module UI
     def self.bundled_icons_path
       File.dirname(__FILE__) + "/../../icons/"
+    end
+
+    def self.bundled_templates
+      YAML.load_file File.dirname(__FILE__) + "/../../data/templates.yml"
     end
   end
 
@@ -74,9 +79,31 @@ module Bottles
       @ui = Ui::CreateBottleDialog.new
       @ui.setup_ui(self)
       @ui.chooseIconButton.connect(SIGNAL :clicked) { chooseIcon }
+      @ui.chooseIconButton.text = ""
       @ui.buttonBox.connect(SIGNAL :accepted) { createBottle }
       @icon_path = Bottles::UI.bundled_icons_path + 'bottles.svg'
       @ui.chooseIconButton.icon = Qt::Icon.new(@icon_path)
+      @ui.listWidget.connect(SIGNAL :itemSelectionChanged) { template_selected }
+      require 'pp'
+      Bottles::UI.bundled_templates.each do |t|
+        item = Qt::ListWidgetItem.new t[:name], @ui.listWidget
+        item.icon = Qt::Icon.new(Bottles::UI.bundled_icons_path + "/#{t[:icon]}")
+      end
+    end
+
+    def template_selected
+      ci = @ui.listWidget.currentItem
+      url = ""
+      if ci
+        @ui.nameEntry.text = ci.text
+        Bottles::UI.bundled_templates.each do |t|
+          if t[:name] == ci.text
+            @ui.urlEntry.text = t[:url] 
+            @icon_path = File.join(Bottles::UI.bundled_icons_path, t[:icon])
+          end
+        end
+        @ui.chooseIconButton.icon = ci.icon
+      end
     end
 
     def chooseIcon

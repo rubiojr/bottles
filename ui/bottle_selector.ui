@@ -60,13 +60,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="templatesButton">
-       <property name="text">
-        <string>Templates</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -85,7 +78,7 @@
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="standardButtons">
-        <set>QDialogButtonBox::Close|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::Open</set>
        </property>
        <property name="centerButtons">
         <bool>false</bool>
