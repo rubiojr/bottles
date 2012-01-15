@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'create_bottle_dialog.ui'
 **
-** Created: Sun Jan 15 17:59:43 2012
+** Created: Sun Jan 15 18:01:27 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

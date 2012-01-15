@@ -1,0 +1,19 @@
+---
+  - :name: Twitter
+    :url: http://www.twitter.com
+    :icon: twitter.png
+  - :name: GMail
+    :url: http://www.gmail.com
+    :icon: gmail-classic_256x256x32.png
+  - :name: Reddit
+    :url: http://www.reddit.com
+    :icon: reddit.svg
+  - :name: Facebook
+    :url: http://www.facebook.com
+    :icon: facebook.png
+  - :name: Trello 
+    :url: http://www.trello.com
+    :icon: trello.png
+  - :name: Runkeeper 
+    :url: http://www.runkeeper.com
+    :icon: runkeeper.png
