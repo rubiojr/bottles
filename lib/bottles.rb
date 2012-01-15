@@ -20,15 +20,19 @@ module Bottles
       end
     end
 
-    def self.run_bottle(path)
+    def self.run_bottle(name)
+      path = name.gsub(/\s/, '_').downcase
       if not bottle_running?(path)
         fork do
           exec "#{File.dirname(__FILE__)}/../bin/bottle-runner", path
         end
+      else
+        puts "Bottle #{path} already running!"
       end
     end
 
     def self.bottle_running?(name)
+      name = name.gsub(/\s/, '_').downcase
       proc_name = name.strip.chomp.split('/').last + "-bottle"
       !`pgrep -f ^#{proc_name}`.strip.chomp.empty?
     end
@@ -63,7 +67,6 @@ module Bottles
     end
 
     def save_cookies
-      puts "saving cookies to #{@bottle_config.cookies_file}"
       access_manager = self.page.networkAccessManager
       cookie_jar = access_manager.cookieJar
       config = {}
@@ -105,7 +108,7 @@ module Bottles
       @config[:name] = name
       @config[:url] = fixed_url 
       @path = path
-      save
+      save if autosave
     end
     
     def icon
@@ -128,11 +131,6 @@ module Bottles
       File.open(@path + '/config.yml', 'w') do |f|
         f.puts @config.to_yaml
       end
-    end
-
-    def self.load(name, path)
-      config = YAML.load_file path + "/config.yml"
-      BottleConfig.new name, config[:url], path, false
     end
 
     def self.load_from_file(path)
@@ -162,7 +160,7 @@ module Bottles
     def load_bottle(name)
       target_dir = File.join(BottleManager.bottles_dir, name.gsub(/\s/, '_').downcase)
       raise ArgumentError.new("Bottle does not exist.") if not File.directory?(target_dir)
-      BottleConfig.load(name, target_dir)
+      BottleConfig.load_from_file(target_dir + '/config.yml')
     end
 
     def load_or_create_bottle(name, url, icon)

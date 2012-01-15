@@ -5,22 +5,26 @@ require 'yaml'
 $: << File.dirname(__FILE__) + "/../lib/"
 require 'bottles'
 
-bottle_path = ARGV[0]
-if bottle_path.nil?
+def param_to_path(p)
+  name.gsub(/\s/, '_').downcase
+end
+
+bottle = ARGV[0]
+if bottle.nil?
   $stderr.puts "Usage: bottle-runner <bottle-name>"
   exit 1
 end
 begin
-  if Bottles::App.bottle_running?(bottle_path)
+  if Bottles::App.bottle_running?(bottle)
     $stderr.puts "Bottle alreading running."
     exit 1
   end
-  proc_name = bottle_path.strip.chomp.split('/').last
+  proc_name = bottle.strip.chomp.split('/').last
   $0 = proc_name + "-bottle"
     Qt::Application.new(ARGV) do |app|
-    path = bottle_path
+    path = bottle
     config = Bottles::BottleManager.instance.find_bottle(path.split("/").last)
-    raise ArgumentError.new("Could not find bottle for path #{path}") if config.nil?
+    raise ArgumentError.new("Could not find bottle '#{bottle}'") if config.nil?
     wb = Bottles::BottleView.new(config)
     wb.show
     app.applicationName = "Bottles"
