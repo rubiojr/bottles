@@ -15,12 +15,11 @@ Create self-contained web apps for linux. It's the Fluid.app (Mac OSX) equivalen
 
 ## Ubuntu
 
-    sudo apt-get install ruby-qt4 rubygems
-    gem install bottles
+PPA: https://launchpad.net/~rubiojr/+archive/bottles/
 
 ## Running
 
-   bottles
+Launch it like any other desktop application.              
 
 # Graphics
 
