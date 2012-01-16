@@ -11,6 +11,12 @@
   - :name: Facebook
     :url: http://www.facebook.com
     :icon: facebook.png
+  - :name: Ducksboard 
+    :url: http://app.ducksboard.com
+    :icon: ducksboard.png
+  - :name: Evernote 
+    :url: https://www.evernote.com/Home.action
+    :icon: evernote.png
   - :name: Trello 
     :url: http://www.trello.com
     :icon: trello.png

@@ -61,6 +61,13 @@ Runkeeper:
 David Herman
 http://www.flickr.com/photos/davidherman/4380063186/sizes/o/in/pool-636943@N22/
 
+Evernote Icon:
+susumu.seph
+http://www.flickr.com/photos/susumu_mcdo/3103943900/sizes/m/in/photostream/
+
+Ducksboard Icon:
+http://ducksboard.com
+
 # Copyright
 
 Copyright (c) 2011 Sergio Rubio <rubiojr@frameos.org>. See LICENSE.txt for

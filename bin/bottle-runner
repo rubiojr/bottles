@@ -2,7 +2,13 @@
 require 'Qt4'
 require 'qtwebkit'
 require 'yaml'
-require 'bottles'
+begin
+  require 'bottles'
+rescue LoadError
+  # Usefull for development
+  $: << File.dirname(__FILE__) + "/../lib/"
+  require 'bottles'
+end
 
 def param_to_path(p)
   name.gsub(/\s/, '_').downcase
