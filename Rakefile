@@ -18,6 +18,7 @@ Jeweler::Tasks.new do |gem|
   #gem.add_runtime_dependency 'alchemist'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'simplecov'
+  gem.files.exclude 'debian'
 end
 Jeweler::RubygemsDotOrgTasks.new
 

@@ -2,7 +2,6 @@
 require 'Qt4'
 require 'qtwebkit'
 require 'yaml'
-$: << File.dirname(__FILE__) + "/../lib/"
 require 'bottles'
 
 def param_to_path(p)

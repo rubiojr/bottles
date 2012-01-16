@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+config = {}
+ARGV.each do  |a|
+  key,val = a.split('=')
+  config[key] = val
+end
+
+File.open File.dirname(__FILE__) + "/paths.rb.in" do |f|
+  buf = f.read
+  buf.gsub! "@@ICONS_DIR@@", config['--with-iconsdir'] || '/usr/share/bottles/icons'
+  buf.gsub! "@@DATA_DIR@@", config['--with-datadir'] || '/usr/share/bottles'
+  buf.gsub! "@@BIN_DIR@@", config['--with-bindir'] || '/usr/bin'
+  buf.gsub! "@@UI_DIR@@", config['--with-uidir'] || '/usr/share/bottles/ui'
+  File.open File.dirname(__FILE__) + "/lib/bottles/paths.rb", 'w' do |dest|
+    dest.puts buf
+  end
+end

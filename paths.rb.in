@@ -1,0 +1,20 @@
+module Bottles
+  class Paths
+    def self.data_dir
+      "@@DATA_DIR@@"
+    end
+
+    def self.ui_dir
+      "@@UI_DIR@@"
+    end
+
+    def self.icons_dir
+      "@@ICONS_DIR@@"
+    end
+
+    def self.bin_dir
+      "@@BIN_DIR@@"
+    end
+  end
+
+end

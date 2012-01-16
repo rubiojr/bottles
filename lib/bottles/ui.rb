@@ -1,18 +1,19 @@
 require 'observer'
 require 'yaml'
+require 'bottles/paths'
 
 module Bottles
-  Dir[File.dirname(__FILE__) + "/../../ui/*_ui.rb"].each do |ui|
+  Dir[Bottles::Paths.ui_dir + "/*_ui.rb"].each do |ui|
     require ui
   end
 
   module UI
     def self.bundled_icons_path
-      File.dirname(__FILE__) + "/../../icons/"
+      Bottles::Paths.icons_dir
     end
 
     def self.bundled_templates
-      YAML.load_file File.dirname(__FILE__) + "/../../data/templates.yml"
+      YAML.load_file(Bottles::Paths.data_dir + "/templates.yml")
     end
   end
 
@@ -81,10 +82,9 @@ module Bottles
       @ui.chooseIconButton.connect(SIGNAL :clicked) { chooseIcon }
       @ui.chooseIconButton.text = ""
       @ui.buttonBox.connect(SIGNAL :accepted) { createBottle }
-      @icon_path = Bottles::UI.bundled_icons_path + 'bottles.svg'
+      @icon_path = Bottles::UI.bundled_icons_path + '/bottles.svg'
       @ui.chooseIconButton.icon = Qt::Icon.new(@icon_path)
       @ui.listWidget.connect(SIGNAL :itemSelectionChanged) { template_selected }
-      require 'pp'
       Bottles::UI.bundled_templates.each do |t|
         item = Qt::ListWidgetItem.new t[:name], @ui.listWidget
         item.icon = Qt::Icon.new(Bottles::UI.bundled_icons_path + "/#{t[:icon]}")

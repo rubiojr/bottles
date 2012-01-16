@@ -24,7 +24,7 @@ module Bottles
       path = name.gsub(/\s/, '_').downcase
       if not bottle_running?(path)
         fork do
-          exec "#{File.dirname(__FILE__)}/../bin/bottle-runner", path
+          exec "#{Bottles::Paths.bin_dir}/bottle-runner", path
         end
       else
         puts "Bottle #{path} already running!"

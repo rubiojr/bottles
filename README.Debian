@@ -1,0 +1,6 @@
+Building Debian Package
+------------------------
+
+dpkg-buildpackage --source-option=-ilib/bottles/paths.rb -rfakeroot
+or
+dbuild -S -ilib/bottles/paths.rb
