@@ -42,17 +42,67 @@ module Bottles
     end
   end
 
+  class BottleJS < Qt::Object
+    slots 'debug(QString)', 'notify(QString,QString)', 'launcher_entry_count(int)'
+
+    def initialize(config)
+      super()
+      @bottle_config = config
+    end
+
+    def notify(summary, body)
+      require 'rubygems'
+      require 'libnotify'
+      Libnotify.show(:body => body, :summary => summary, :timeout => 2.5, 
+                     :icon_path => @bottle_config.icon)
+    end
+
+    def launcher_entry_count(count)
+      signal = Qt::DBusMessage.createSignal("/",
+                                            "com.canonical.Unity.LauncherEntry",
+                                            "Update")
+      signal << "application://#{@bottle_config.name.downcase}-bottle.desktop"
+      if count == 0
+        signal << { 'count' => count, 'count-visible' => false}
+      else
+        signal << { 'count' => count, 'count-visible' => true, 'urgent' => true }
+      end
+      Qt::DBusConnection::sessionBus().send(signal)
+    end
+     
+    def debug(msg)
+      puts msg
+    end
+  end
+
   class BottleView < Qt::WebView
-    
+
     def initialize(bottle_config, parent = nil)
       super(parent)
       @bottle_manager = BottleManager.instance
       @bottle_config = bottle_config
+      @bottlejs = BottleJS.new(@bottle_config)
       connect(SIGNAL('loadProgress(int)')) { |p| load_progress(p) }
       connect(SIGNAL('urlChanged(QUrl)')) { |o| url_changed(o) }
+      connect(SIGNAL('loadFinished(bool)')) { |o| load_finished(o) }
+      page().mainFrame().connect(SIGNAL('javaScriptWindowObjectCleared()')) do 
+        add_native_object
+      end
       setGeometry 0,0,900,600
+      Qt::WebSettings.globalSettings.setAttribute Qt::WebSettings::PluginsEnabled, false
+      Qt::WebSettings.globalSettings.setAttribute Qt::WebSettings::JavaEnabled, false
+      Qt::WebSettings.globalSettings.setAttribute Qt::WebSettings::DnsPrefetchEnabled, true
       load_cookies
       load_content
+    end
+
+    def add_native_object
+      page.mainFrame.addToJavaScriptWindowObject("bottlejs", @bottlejs)
+    end
+
+    def load_finished(state)
+      if state == true
+      end
     end
 
     def url_changed(url)
@@ -60,6 +110,12 @@ module Bottles
     end
 
     def load_progress(p)
+      if p == 90 and not @jsloaded
+        @jsloaded = true
+        puts "loading jQuery"
+        page().mainFrame().evaluateJavaScript(File.read(Bottles::Paths.data_dir + "/scripts/jquery.js"))
+        page().mainFrame().evaluateJavaScript(File.read(Bottles::Paths.data_dir + "/scripts/gmail.js"))
+      end
     end
 
     def load_content
