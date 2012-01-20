@@ -8,7 +8,7 @@ require 'bottles/ui'
 
 module Bottles
   
-  VERSION = '0.1'
+  VERSION = '0.2'
 
   class App
     def self.run
@@ -75,6 +75,19 @@ module Bottles
     end
   end
 
+  class BottlePopup < Qt::WebView
+    def initialize(url, bottle_config, parent = nil)
+      super(parent)
+      page.setForwardUnsupportedContent true
+      page.connect(SIGNAL('downloadRequested(QNetworkRequest)')) { |o| download_requested(o) }
+      self.load url
+    end
+
+    def download_requested(req)
+      puts 'download_requested'
+    end
+  end
+
   class BottleView < Qt::WebView
 
     def initialize(bottle_config, parent = nil)
@@ -84,16 +97,35 @@ module Bottles
       @bottlejs = BottleJS.new(@bottle_config)
       connect(SIGNAL('loadProgress(int)')) { |p| load_progress(p) }
       connect(SIGNAL('urlChanged(QUrl)')) { |o| url_changed(o) }
+      connect(SIGNAL('linkClicked(QUrl)')) { |o| link_clicked(o) }
       connect(SIGNAL('loadFinished(bool)')) { |o| load_finished(o) }
+      page.connect(SIGNAL('downloadRequested(QNetworkRequest)')) { |o| download_requested(o) }
       page().mainFrame().connect(SIGNAL('javaScriptWindowObjectCleared()')) do 
         add_native_object
       end
       setGeometry 0,0,900,600
-      Qt::WebSettings.globalSettings.setAttribute Qt::WebSettings::PluginsEnabled, false
-      Qt::WebSettings.globalSettings.setAttribute Qt::WebSettings::JavaEnabled, false
-      Qt::WebSettings.globalSettings.setAttribute Qt::WebSettings::DnsPrefetchEnabled, true
+      @gsettings = Qt::WebSettings.globalSettings
+      @gsettings.setAttribute Qt::WebSettings::PluginsEnabled, false
+      @gsettings.setAttribute Qt::WebSettings::JavaEnabled, false
+      @gsettings.setAttribute Qt::WebSettings::DnsPrefetchEnabled, true
+      @gsettings.setAttribute Qt::WebSettings::JavascriptCanOpenWindows, true
+      @gsettings.setAttribute Qt::WebSettings::DeveloperExtrasEnabled, true
+      @gsettings.setAttribute Qt::WebSettings::OfflineWebApplicationCacheEnabled, true
+      Qt::WebSettings.globalSettings.enablePersistentStorage(@bottle_config.storage_path)
       load_cookies
       load_content
+    end
+
+    def download_requested(req)
+      puts 'download_requested'
+    end
+
+    def link_clicked(url)
+      puts 'link_clicked'
+      view = BottlePopup.new url, @bottle_config
+      cookie_jar = self.page.networkAccessManager.cookieJar
+      view.page.networkAccessManager.cookie_jar.setAllCookies cookie_jar.allCookies
+      view.show
     end
 
     def add_native_object
@@ -107,6 +139,7 @@ module Bottles
 
     def url_changed(url)
       save_cookies
+      puts 'url changed'
     end
 
     def load_progress(p)
@@ -119,6 +152,7 @@ module Bottles
     end
 
     def load_content
+      page.setLinkDelegationPolicy Qt::WebPage::DelegateExternalLinks
       self.load Qt::Url.new(@bottle_config.url)
     end
 
@@ -181,6 +215,12 @@ module Bottles
 
     def cookies_file
       @path + "/cookies.yml"
+    end
+
+    def storage_path
+      p = @path + "/storage"
+      Dir.mkdir p if not File.directory?(p) 
+      @path + "/storage"
     end
 
     def save
