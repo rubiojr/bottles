@@ -7,7 +7,7 @@
 var pollDurationMS = 800;
 
 if (!window.bottlejs) {
-    alert('Please upgrade to the latest version of Greasemonkey.');
+    alert('This script has been coded for Bottles (http://bottles.frameos.org)');
 }
 
 function GmailFavIconUnreadCount() {
