@@ -31,11 +31,11 @@ end
 
 task :default => :build
 
-require 'rdoc/task'
-Rake::RDocTask.new do |rdoc|
-  version = Bottles::VERSION
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "esx #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+#require 'rdoc/task'
+#Rake::RDocTask.new do |rdoc|
+#  version = Bottles::VERSION
+#  rdoc.rdoc_dir = 'rdoc'
+#  rdoc.title = "esx #{version}"
+#  rdoc.rdoc_files.include('README*')
+#  rdoc.rdoc_files.include('lib/**/*.rb')
+#end

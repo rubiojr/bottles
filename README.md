@@ -22,9 +22,21 @@ https://trello.com/board/bottles/4f0c6a22923b1a287716e6b6
 
 PPA: https://launchpad.net/~rubiojr/+archive/bottles/
 
+## Installing via Rubygems
+
+You'll need Qt4 and Qt4 Webkit ruby bindings installed. In Debian/Ubuntu
+this can be easily accomplished with the following command:
+
+    sudo apt-get install ruby-qt4 ruby-qt4-webkit
+
+Install the gem after that:
+
+    sudo gem install bottles
+
 ## Running
 
-Launch it like any other desktop application.              
+Launch it like any other desktop application. You can also launch it from
+the command line using the *bottles* command.             
 
 # Graphics
 
