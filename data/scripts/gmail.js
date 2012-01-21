@@ -1,10 +1,10 @@
-// Gmail Unread Message Count
+// Gmail Unread Message Count and Notifications for Bottles (bottles.frameos.org)
 // based on the script from Eric Bogs http://userscripts.org/scripts/show/39432
 //
 
 // How often to attempt to update the favicon.  Change this to a larger number
 // if your Firefox browsing becomes sluggish.
-var pollDurationMS = 800;
+var pollDurationMS = 5000;
 
 if (!window.bottlejs) {
     alert('This script has been coded for Bottles (http://bottles.frameos.org)');

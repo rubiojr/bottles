@@ -145,9 +145,14 @@ module Bottles
     def load_progress(p)
       if p == 90 and not @jsloaded
         @jsloaded = true
-        puts "loading jQuery"
-        page().mainFrame().evaluateJavaScript(File.read(Bottles::Paths.data_dir + "/scripts/jquery.js"))
-        page().mainFrame().evaluateJavaScript(File.read(Bottles::Paths.data_dir + "/scripts/gmail.js"))
+        # Load user script and jQuery
+        user_script = @bottle_config.path + "/user.js"
+        if File.exist?(@bottle_config.path + "/user.js")
+          puts "loading jQuery"
+          page().mainFrame().evaluateJavaScript(File.read(Bottles::Paths.data_dir + "/scripts/jquery.js"))
+          puts "loading user script #{user_script}"
+          page().mainFrame().evaluateJavaScript(File.read(user_script))
+        end
       end
     end
 
