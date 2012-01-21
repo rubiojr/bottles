@@ -26,6 +26,11 @@ module Bottles
       notify_observers [name,icon]
     end
 
+    def remove_bottle(name)
+      notify_observers name
+    end
+
+
   end
 
   class BottleSelectorDialog < Qt::Dialog
@@ -37,6 +42,7 @@ module Bottles
       @ui.setup_ui(self)
       currentRow = 0 
       @ui.newBottleButton.connect(SIGNAL :clicked) { showCreateBottleDialog }
+      @ui.deleteButton.connect(SIGNAL :clicked) { delete_selected_bottle }
       @ui.listWidget.connect SIGNAL('itemActivated(QListWidgetItem*)') do |item|
         item_activated item
       end
@@ -49,6 +55,20 @@ module Bottles
       end
     end
     
+    def delete_selected_bottle
+      name = @ui.listWidget.currentItem.text
+      msg_box = Qt::MessageBox.new
+      msg_box.icon = Qt::MessageBox::Question
+      msg_box.setText("Do you want to delete #{name} bottle?");
+      msg_box.setStandardButtons(Qt::MessageBox::Cancel | Qt::MessageBox::Ok);
+      msg_box.setDefaultButton(Qt::MessageBox::Cancel)
+      ret = msg_box.exec();
+      if Qt::MessageBox::Ok == ret
+        BottleManager.instance.delete_bottle name  
+        @ui.listWidget.takeItem @ui.listWidget.currentRow
+      end
+    end
+
     def ok_pressed
       Bottles::App.run_bottle @ui.listWidget.currentItem.text
       exit

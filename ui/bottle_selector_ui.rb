@@ -1,7 +1,7 @@
 =begin
 ** Form generated from reading ui file 'bottle_selector.ui'
 **
-** Created: Sun Jan 15 18:02:04 2012
+** Created: Sat Jan 21 17:14:56 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -14,6 +14,7 @@ class Ui_BottleSelectorDialog
     attr_reader :horizontalLayout_2
     attr_reader :newBottleButton
     attr_reader :horizontalSpacer
+    attr_reader :deleteButton
     attr_reader :buttonBox
 
     def setupUi(bottleSelectorDialog)
@@ -54,8 +55,22 @@ class Ui_BottleSelectorDialog
 
     @horizontalLayout_2.addItem(@horizontalSpacer)
 
+    @deleteButton = Qt::PushButton.new(bottleSelectorDialog)
+    @deleteButton.objectName = "deleteButton"
+
+    @horizontalLayout_2.addWidget(@deleteButton)
+
     @buttonBox = Qt::DialogButtonBox.new(bottleSelectorDialog)
     @buttonBox.objectName = "buttonBox"
+    @sizePolicy = Qt::SizePolicy.new(Qt::SizePolicy::Minimum, Qt::SizePolicy::Fixed)
+    @sizePolicy.setHorizontalStretch(0)
+    @sizePolicy.setVerticalStretch(0)
+    @sizePolicy.heightForWidth = @buttonBox.sizePolicy.hasHeightForWidth
+    @buttonBox.sizePolicy = @sizePolicy
+    @buttonBox.maximumSize = Qt::Size.new(90, 16777215)
+    @font1 = Qt::Font.new
+    @font1.kerning = true
+    @buttonBox.font = @font1
     @buttonBox.orientation = Qt::Horizontal
     @buttonBox.standardButtons = Qt::DialogButtonBox::Open
     @buttonBox.centerButtons = false
@@ -83,6 +98,9 @@ class Ui_BottleSelectorDialog
     def retranslateUi(bottleSelectorDialog)
     bottleSelectorDialog.windowTitle = Qt::Application.translate("BottleSelectorDialog", "Bottle Selector", nil, Qt::Application::UnicodeUTF8)
     @newBottleButton.text = Qt::Application.translate("BottleSelectorDialog", "New Bottle", nil, Qt::Application::UnicodeUTF8)
+    @deleteButton.toolTip = Qt::Application.translate("BottleSelectorDialog", "Delete the selected bottle", nil, Qt::Application::UnicodeUTF8)
+    @deleteButton.text = Qt::Application.translate("BottleSelectorDialog", "Delete", nil, Qt::Application::UnicodeUTF8)
+    @buttonBox.toolTip = Qt::Application.translate("BottleSelectorDialog", "Open the selected bottle", nil, Qt::Application::UnicodeUTF8)
     end # retranslateUi
 
     def retranslate_ui(bottleSelectorDialog)

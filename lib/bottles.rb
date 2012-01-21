@@ -252,12 +252,23 @@ module Bottles
 
     def initialize
       bootstrap
+      @trash_dir = BottleManager.bottles_dir + "/deleted_bottles"
+    end
+
+    def delete_bottle(name)
+      FileUtils.mkdir @trash_dir if not File.directory?(@trash_dir) 
+      bdir = BottleManager.bottles_dir + "/#{normalize_bottle_name(name)}"
+      FileUtils.mv bdir, @trash_dir
     end
 
     def bootstrap
       FileUtils.mkdir_p(BottleManager.bottles_dir) unless File.directory?(BottleManager.bottles_dir)
     end
-    
+
+    def normalize_bottle_name(name)
+      name.gsub(/\s/, '_').downcase
+    end 
+
     def load_bottle(name)
       target_dir = File.join(BottleManager.bottles_dir, name.gsub(/\s/, '_').downcase)
       raise ArgumentError.new("Bottle does not exist.") if not File.directory?(target_dir)

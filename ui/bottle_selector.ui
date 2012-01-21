@@ -73,7 +73,37 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="deleteButton">
+       <property name="toolTip">
+        <string>Delete the selected bottle</string>
+       </property>
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <kerning>true</kerning>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Open the selected bottle</string>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
